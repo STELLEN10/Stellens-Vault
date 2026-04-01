@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit — Stellen's Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="cursor"></div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="influencers.html" class="nav-link">Influencers</a></li>
+      <li><a href="resources.html" class="nav-link">Resources</a></li>
+      <li><a href="categories.html" class="nav-link">Categories</a></li>
+      <li><a href="digest.html" class="nav-link">Weekly Digest</a></li>
+      <li><a href="submit.html" class="nav-link btn-submit active">+ Submit</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="influencers.html">Influencers</a>
+    <a href="resources.html">Resources</a>
+    <a href="categories.html">Categories</a>
+    <a href="digest.html">Weekly Digest</a>
+    <a href="submit.html">+ Submit</a>
+  </div>
+
+  <section class="page-hero">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <h1 class="reveal">Submit an <span>Influencer</span></h1>
+    <p class="reveal">Know a dev influencer sharing great resources on Instagram? Add them to the vault.</p>
+  </section>
+
+  <section class="submit-section">
+    <div class="s-wrap submit-wrap">
+      <div class="submit-info reveal">
+        <h3>Before you submit</h3>
+        <ul class="submit-rules">
+          <li>✅ Must be active on Instagram</li>
+          <li>✅ Must share developer resources (links, tools, courses)</li>
+          <li>✅ Must have a public account</li>
+          <li>❌ No spam or self-promotion accounts</li>
+          <li>❌ No accounts that only post memes</li>
+        </ul>
+        <div class="submit-note">
+          Every submission is reviewed by Stellen personally before going live. This keeps the vault clean and high-quality.
+        </div>
+      </div>
+
+      <!-- FORMSPREE WIRED FORM -->
+      <form class="submit-form reveal" id="submitForm" onsubmit="handleSubmit(event)">
+        <div class="form-group">
+          <label>Instagram Username *</label>
+          <div class="input-wrap">
+            <span class="input-prefix">@</span>
+            <input type="text" name="instagram_username" placeholder="username" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Their Niche / Focus *</label>
+          <select name="niche" required>
+            <option value="">Select a category...</option>
+            <option value="frontend">Frontend Development</option>
+            <option value="backend">Backend Development</option>
+            <option value="fullstack">Full Stack</option>
+            <option value="design">UI/UX Design</option>
+            <option value="career">Tech Career</option>
+            <option value="data">Data Science / ML</option>
+            <option value="mobile">Mobile Dev</option>
+            <option value="devops">DevOps / Cloud</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Why should they be in the vault?</label>
+          <textarea name="reason" placeholder="What makes their content valuable for developers?" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Example resource link they shared (optional)</label>
+          <input type="url" name="example_link" placeholder="https://...">
+        </div>
+        <div class="form-group">
+          <label>Your email (optional — for updates on your submission)</label>
+          <input type="email" name="email" placeholder="you@example.com">
+        </div>
+        <!-- Formspree honeypot — catches spam bots -->
+        <input type="text" name="_gotcha" style="display:none">
+        <button type="submit" class="btn-primary submit-btn">
+          Submit to the Vault →
+        </button>
+        <p class="form-note">We'll review your submission within 48 hours.</p>
+      </form>
+
+      <!-- SUCCESS STATE -->
+      <div class="submit-success" id="submitSuccess" style="display:none;">
+        <div class="success-icon">🔐</div>
+        <h3>Submission received!</h3>
+        <p>Stellen will review it personally. If it's a great fit, it'll be added to the vault soon.</p>
+        <a href="influencers.html" class="btn-primary">Browse Influencers →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Stellen's<span>Vault</span></div>
+        <p>Curated from Instagram. Built for developers.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <div class="fl-title">Pages</div>
+          <a href="influencers.html">Influencers</a>
+          <a href="resources.html">Resources</a>
+          <a href="categories.html">Categories</a>
+          <a href="digest.html">Weekly Digest</a>
+          <a href="submit.html">Submit</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+  <script>
+    async function handleSubmit(e) {
+      e.preventDefault();
+
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.textContent = 'Sending...';
+      btn.disabled = true;
+
+      const formData = new FormData(e.target);
+
+      try {
+        const res = await fetch('https://formspree.io/f/mojpljze', {
+          method: 'POST',
+          body: formData,
+          headers: { 'Accept': 'application/json' }
+        });
+
+        if (res.ok) {
+          document.getElementById('submitForm').style.display = 'none';
+          document.getElementById('submitSuccess').style.display = 'flex';
+        } else {
+          btn.textContent = 'Something went wrong. Try again.';
+          btn.disabled = false;
+        }
+      } catch (err) {
+        btn.textContent = 'Network error. Try again.';
+        btn.disabled = false;
+      }
+    }
+  </script>
+</body>
+</html>

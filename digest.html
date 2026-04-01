@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Weekly Digest — Stellen's Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="cursor"></div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="influencers.html" class="nav-link">Influencers</a></li>
+      <li><a href="resources.html" class="nav-link">Resources</a></li>
+      <li><a href="categories.html" class="nav-link">Categories</a></li>
+      <li><a href="digest.html" class="nav-link active">Weekly Digest</a></li>
+      <li><a href="submit.html" class="nav-link btn-submit">+ Submit</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="influencers.html">Influencers</a>
+    <a href="resources.html">Resources</a>
+    <a href="categories.html">Categories</a>
+    <a href="digest.html">Weekly Digest</a>
+    <a href="submit.html">+ Submit</a>
+  </div>
+
+  <section class="page-hero">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <h1 class="reveal">Weekly <span>Digest</span></h1>
+    <p class="reveal">The top 10 developer resources of the week — hand-picked by Stellen, every Monday.</p>
+  </section>
+
+  <section class="digest-section">
+    <div class="s-wrap digest-wrap">
+
+      <!-- SUBSCRIBE BOX -->
+      <div class="digest-subscribe reveal">
+        <div class="ds-left">
+          <div class="ds-icon">📬</div>
+          <div>
+            <h3>Get it in your inbox</h3>
+            <p>Every Monday morning. No spam. Unsubscribe anytime.</p>
+          </div>
+        </div>
+        <div class="ds-form" id="dsForm">
+          <input type="email" id="digestEmail" placeholder="your@email.com">
+          <button onclick="subscribeDigest()" class="btn-primary">Subscribe →</button>
+        </div>
+        <div class="ds-success" id="dsSuccess" style="display:none;">
+          <span>🎉 You're in! First digest lands Monday.</span>
+        </div>
+      </div>
+
+      <!-- COMING SOON STATE -->
+      <div class="digest-coming reveal">
+        <div class="dc-badge">
+          <span class="badge-pulse"></span>
+          First digest drops when the vault goes live
+        </div>
+        <h2>Issue <span>#001</span> is being built</h2>
+        <p>Once the first influencers are live in the vault, the weekly digest will launch.<br>Subscribe above so you don't miss it.</p>
+
+        <div class="digest-preview">
+          <div class="dp-header">
+            <span class="dp-issue">Issue #001 · Preview</span>
+            <span class="dp-date">Coming Soon</span>
+          </div>
+          <div class="dp-items">
+            <div class="dp-item locked">
+              <div class="dp-num">01</div>
+              <div class="dp-content">
+                <div class="dp-title">🔒 Top resource of the week</div>
+                <div class="dp-meta">Submitted by a vault influencer</div>
+              </div>
+              <div class="dp-votes">— votes</div>
+            </div>
+            <div class="dp-item locked">
+              <div class="dp-num">02</div>
+              <div class="dp-content">
+                <div class="dp-title">🔒 Resource #2</div>
+                <div class="dp-meta">Submitted by a vault influencer</div>
+              </div>
+              <div class="dp-votes">— votes</div>
+            </div>
+            <div class="dp-item locked">
+              <div class="dp-num">03</div>
+              <div class="dp-content">
+                <div class="dp-title">🔒 Resource #3</div>
+                <div class="dp-meta">Submitted by a vault influencer</div>
+              </div>
+              <div class="dp-votes">— votes</div>
+            </div>
+          </div>
+          <div class="dp-footer">+ 7 more resources in the full digest</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Stellen's<span>Vault</span></div>
+        <p>Curated from Instagram. Built for developers.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <div class="fl-title">Pages</div>
+          <a href="influencers.html">Influencers</a>
+          <a href="resources.html">Resources</a>
+          <a href="categories.html">Categories</a>
+          <a href="digest.html">Weekly Digest</a>
+          <a href="submit.html">Submit</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
+    </div>
+  </footer>
+  <script src="js/main.js"></script>
+  <script>
+    function subscribeDigest() {
+      const email = document.getElementById('digestEmail').value;
+      if (!email) return;
+      document.getElementById('dsForm').style.display = 'none';
+      document.getElementById('dsSuccess').style.display = 'flex';
+    }
+  </script>
+</body>
+</html>

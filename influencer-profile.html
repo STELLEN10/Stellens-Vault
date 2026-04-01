@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Influencer Profile — Stellen's Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="cursor"></div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="influencers.html" class="nav-link active">Influencers</a></li>
+      <li><a href="resources.html" class="nav-link">Resources</a></li>
+      <li><a href="categories.html" class="nav-link">Categories</a></li>
+      <li><a href="digest.html" class="nav-link">Weekly Digest</a></li>
+      <li><a href="submit.html" class="nav-link btn-submit">+ Submit</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="influencers.html">Influencers</a>
+    <a href="resources.html">Resources</a>
+    <a href="categories.html">Categories</a>
+    <a href="digest.html">Weekly Digest</a>
+    <a href="submit.html">+ Submit</a>
+  </div>
+
+  <!-- PROFILE HERO -->
+  <section class="profile-hero">
+    <div class="orb orb1"></div>
+    <a href="influencers.html" class="back-link">← Back to Influencers</a>
+    <div class="profile-card reveal">
+      <div class="profile-avatar" id="profileAvatar">?</div>
+      <div class="profile-info">
+        <div class="profile-handle" id="profileHandle">@username</div>
+        <div class="profile-name" id="profileName">Influencer Name</div>
+        <div class="profile-niche" id="profileNiche">Full Stack Developer</div>
+        <div class="profile-stats">
+          <div class="ps"><span id="profileFollowers">–</span><span>Followers</span></div>
+          <div class="ps"><span id="profileLinks">0</span><span>Links Shared</span></div>
+          <div class="ps"><span id="profileVotes">0</span><span>Total Votes</span></div>
+        </div>
+        <a href="#" id="profileIGLink" target="_blank" class="btn-ig">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069z"/></svg>
+          View on Instagram
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- LINKS SECTION -->
+  <section class="profile-links-section">
+    <div class="s-wrap">
+      <div class="pl-header reveal">
+        <h2>Shared <span>Resources</span></h2>
+        <div class="filter-btns">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="courses">Courses</button>
+          <button class="filter-btn" data-filter="tools">Tools</button>
+          <button class="filter-btn" data-filter="ui">UI</button>
+          <button class="filter-btn" data-filter="articles">Articles</button>
+        </div>
+      </div>
+
+      <div class="empty-state" id="profileEmpty">
+        <div class="empty-icon">🔗</div>
+        <h3>No links yet</h3>
+        <p>Resources from this influencer will appear here once added.</p>
+      </div>
+
+      <div class="res-list" id="profileResList"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Stellen's<span>Vault</span></div>
+        <p>Curated from Instagram. Built for developers.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <div class="fl-title">Pages</div>
+          <a href="influencers.html">Influencers</a>
+          <a href="resources.html">Resources</a>
+          <a href="categories.html">Categories</a>
+          <a href="digest.html">Weekly Digest</a>
+          <a href="submit.html">Submit</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

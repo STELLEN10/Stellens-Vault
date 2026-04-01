@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Stellen's Vault — Dev Resources Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <!-- CURSOR -->
+  <div id="cursor"></div>
+
+  <!-- NAV -->
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="influencers.html" class="nav-link">Influencers</a></li>
+      <li><a href="resources.html" class="nav-link">Resources</a></li>
+      <li><a href="categories.html" class="nav-link">Categories</a></li>
+      <li><a href="digest.html" class="nav-link">Weekly Digest</a></li>
+      <li><a href="submit.html" class="nav-link btn-submit">+ Submit</a></li>
+    </ul>
+    <button class="nav-burger" id="burger">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <!-- MOBILE MENU -->
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="influencers.html">Influencers</a>
+    <a href="resources.html">Resources</a>
+    <a href="categories.html">Categories</a>
+    <a href="digest.html">Weekly Digest</a>
+    <a href="submit.html">+ Submit</a>
+  </div>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg">
+      <div class="vault-grid"></div>
+      <div class="orb orb1"></div>
+      <div class="orb orb2"></div>
+      <div class="orb orb3"></div>
+    </div>
+    <div class="hero-content">
+      <div class="hero-badge reveal">
+        <span class="badge-pulse"></span>
+        Curated by Stellen · Updated Weekly
+      </div>
+      <h1 class="hero-title reveal">
+        The Dev<br><span class="vault-word">Vault</span><br>You Need.
+      </h1>
+      <p class="hero-sub reveal">
+        Every Instagram dev influencer. Every link they've ever shared.<br>
+        All in one place. No more hunting.
+      </p>
+      <div class="hero-btns reveal">
+        <a href="influencers.html" class="btn-primary">Browse Influencers →</a>
+        <a href="resources.html" class="btn-ghost">Explore Resources</a>
+      </div>
+      <div class="hero-stats reveal">
+        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Influencers</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Resources</span></div>
+        <div class="stat-div"></div>
+        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Categories</span></div>
+      </div>
+    </div>
+    <div class="hero-visual reveal">
+      <div class="vault-card floating">
+        <div class="vc-header">
+          <div class="vc-avatar">SV</div>
+          <div>
+            <div class="vc-name">Stellen's Vault</div>
+            <div class="vc-tag">Dev Resource Hub</div>
+          </div>
+        </div>
+        <div class="vc-links">
+          <div class="vc-link-item"><span class="vl-dot cyan"></span>Free Courses</div>
+          <div class="vc-link-item"><span class="vl-dot violet"></span>UI Libraries</div>
+          <div class="vc-link-item"><span class="vl-dot pink"></span>Cheat Sheets</div>
+          <div class="vc-link-item"><span class="vl-dot gold"></span>Dev Tools</div>
+          <div class="vc-link-item"><span class="vl-dot cyan"></span>Job Boards</div>
+        </div>
+        <div class="vc-footer">
+          <span>🔒 All resources verified</span>
+          <span class="vc-live">LIVE</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="how-section">
+    <div class="s-wrap">
+      <div class="s-label reveal">How It Works</div>
+      <h2 class="s-title reveal">Simple. Powerful. <span>Free.</span></h2>
+      <div class="steps-grid">
+        <div class="step-card reveal">
+          <div class="step-num">01</div>
+          <div class="step-icon">👤</div>
+          <h3>Browse Influencers</h3>
+          <p>Explore verified dev influencers from Instagram — each with their profile, niche, and follower count.</p>
+        </div>
+        <div class="step-card reveal rv2">
+          <div class="step-num">02</div>
+          <div class="step-icon">🔗</div>
+          <h3>Explore Their Links</h3>
+          <p>Click any influencer to see every resource they've ever shared — courses, tools, articles, and more.</p>
+        </div>
+        <div class="step-card reveal rv3">
+          <div class="step-num">03</div>
+          <div class="step-icon">🗳️</div>
+          <h3>Vote & Save</h3>
+          <p>Upvote your favourite resources and save them to your personal collection for later.</p>
+        </div>
+        <div class="step-card reveal">
+          <div class="step-num">04</div>
+          <div class="step-icon">📬</div>
+          <h3>Weekly Digest</h3>
+          <p>Get the top 10 resources of the week delivered straight to your inbox every Monday.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATEGORIES PREVIEW -->
+  <section class="cats-section">
+    <div class="s-wrap">
+      <div class="s-label reveal">Browse By</div>
+      <h2 class="s-title reveal">Resource <span>Categories</span></h2>
+      <div class="cats-grid">
+        <a href="categories.html?cat=courses" class="cat-card reveal">
+          <div class="cat-icon">🎓</div>
+          <div class="cat-name">Free Courses</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=tools" class="cat-card reveal rv2">
+          <div class="cat-icon">🛠️</div>
+          <div class="cat-name">Dev Tools</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=ui" class="cat-card reveal rv3">
+          <div class="cat-icon">🎨</div>
+          <div class="cat-name">UI Libraries</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=cheatsheets" class="cat-card reveal">
+          <div class="cat-icon">📄</div>
+          <div class="cat-name">Cheat Sheets</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=jobs" class="cat-card reveal rv2">
+          <div class="cat-icon">💼</div>
+          <div class="cat-name">Job Boards</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=roadmaps" class="cat-card reveal rv3">
+          <div class="cat-icon">🗺️</div>
+          <div class="cat-name">Roadmaps</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=youtube" class="cat-card reveal">
+          <div class="cat-icon">▶️</div>
+          <div class="cat-name">YouTube</div>
+          <div class="cat-count">0 links</div>
+        </a>
+        <a href="categories.html?cat=articles" class="cat-card reveal rv2">
+          <div class="cat-icon">📰</div>
+          <div class="cat-name">Articles</div>
+          <div class="cat-count">0 links</div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- SUBMIT CTA -->
+  <section class="cta-section">
+    <div class="s-wrap">
+      <div class="cta-box reveal">
+        <div class="cta-orb"></div>
+        <h2>Know a dev influencer<br>we're <span>missing?</span></h2>
+        <p>Submit their profile and help grow the vault. Every submission is reviewed by Stellen personally.</p>
+        <a href="submit.html" class="btn-primary">Submit an Influencer →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Stellen's<span>Vault</span></div>
+        <p>The ultimate dev resource hub.<br>Curated from Instagram. Built for developers.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <div class="fl-title">Pages</div>
+          <a href="influencers.html">Influencers</a>
+          <a href="resources.html">Resources</a>
+          <a href="categories.html">Categories</a>
+          <a href="digest.html">Weekly Digest</a>
+          <a href="submit.html">Submit</a>
+        </div>
+        <div class="fl-col">
+          <div class="fl-title">Stellen</div>
+          <a href="https://github.com/stellen10" target="_blank">GitHub</a>
+          <a href="https://instagram.com/still.stellen" target="_blank">Instagram</a>
+          <a href="https://youtube.com/@stellen10" target="_blank">YouTube</a>
+          <a href="https://x.com/officialstellen" target="_blank">Twitter / X</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

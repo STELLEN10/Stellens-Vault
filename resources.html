@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Resources — Stellen's Vault</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="cursor"></div>
+  <nav id="navbar">
+    <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
+    <ul class="nav-links">
+      <li><a href="influencers.html" class="nav-link">Influencers</a></li>
+      <li><a href="resources.html" class="nav-link active">Resources</a></li>
+      <li><a href="categories.html" class="nav-link">Categories</a></li>
+      <li><a href="digest.html" class="nav-link">Weekly Digest</a></li>
+      <li><a href="submit.html" class="nav-link btn-submit">+ Submit</a></li>
+    </ul>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
+  </nav>
+  <div class="mobile-menu" id="mobileMenu">
+    <a href="influencers.html">Influencers</a>
+    <a href="resources.html">Resources</a>
+    <a href="categories.html">Categories</a>
+    <a href="digest.html">Weekly Digest</a>
+    <a href="submit.html">+ Submit</a>
+  </div>
+
+  <section class="page-hero">
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <h1 class="reveal">All <span>Resources</span></h1>
+    <p class="reveal">Every link shared by every influencer in the vault — searchable, filterable, voteable.</p>
+  </section>
+
+  <section class="res-section">
+    <div class="s-wrap">
+      <div class="filters reveal">
+        <div class="search-wrap">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="searchInput" placeholder="Search resources..." class="search-input">
+        </div>
+        <div class="filter-btns">
+          <button class="filter-btn active" data-filter="all">All</button>
+          <button class="filter-btn" data-filter="courses">Courses</button>
+          <button class="filter-btn" data-filter="tools">Tools</button>
+          <button class="filter-btn" data-filter="ui">UI Libs</button>
+          <button class="filter-btn" data-filter="cheatsheets">Cheat Sheets</button>
+          <button class="filter-btn" data-filter="jobs">Jobs</button>
+          <button class="filter-btn" data-filter="articles">Articles</button>
+        </div>
+        <div class="sort-wrap">
+          <select class="sort-select" id="sortSelect">
+            <option value="newest">Newest First</option>
+            <option value="top">Top Voted</option>
+            <option value="saved">Most Saved</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="empty-state" id="emptyState">
+        <div class="empty-icon">📭</div>
+        <h3>No resources yet</h3>
+        <p>Links will appear here as influencers are added to the vault.</p>
+        <a href="submit.html" class="btn-primary">Submit an Influencer →</a>
+      </div>
+
+      <div class="res-list" id="resList"></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="nav-logo">Stellen's<span>Vault</span></div>
+        <p>Curated from Instagram. Built for developers.</p>
+      </div>
+      <div class="footer-links">
+        <div class="fl-col">
+          <div class="fl-title">Pages</div>
+          <a href="influencers.html">Influencers</a>
+          <a href="resources.html">Resources</a>
+          <a href="categories.html">Categories</a>
+          <a href="digest.html">Weekly Digest</a>
+          <a href="submit.html">Submit</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
+    </div>
+  </footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
