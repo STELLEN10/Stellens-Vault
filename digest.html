@@ -49,10 +49,13 @@
         </div>
         <div class="ds-form" id="dsForm">
           <input type="email" id="digestEmail" placeholder="your@email.com">
-          <button onclick="subscribeDigest()" class="btn-primary">Subscribe →</button>
+          <button onclick="subscribeDigest()" class="btn-primary" id="subBtn">Subscribe →</button>
         </div>
         <div class="ds-success" id="dsSuccess" style="display:none;">
           <span>🎉 You're in! First digest lands Monday.</span>
+        </div>
+        <div class="ds-error" id="dsError" style="display:none;">
+          <span>❌ Something went wrong. Try again.</span>
         </div>
       </div>
 
@@ -123,14 +126,61 @@
       <span>© 2026 Stellen's Vault. Built by <a href="https://github.com/stellen10">Stellen</a> 🇿🇦</span>
     </div>
   </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
   <script>
-    function subscribeDigest() {
-      const email = document.getElementById('digestEmail').value;
+    async function subscribeDigest() {
+      const email = document.getElementById('digestEmail').value.trim();
+      const btn = document.getElementById('subBtn');
+      const errorEl = document.getElementById('dsError');
+
       if (!email) return;
-      document.getElementById('dsForm').style.display = 'none';
-      document.getElementById('dsSuccess').style.display = 'flex';
+
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        errorEl.innerHTML = '<span>❌ Please enter a valid email address.</span>';
+        errorEl.style.display = 'flex';
+        return;
+      }
+
+      btn.textContent = 'Subscribing...';
+      btn.disabled = true;
+      errorEl.style.display = 'none';
+
+      try {
+        const res = await fetch('https://formspree.io/f/mpqolewe', {
+          method: 'POST',
+          headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email: email,
+            _subject: 'New Digest Subscriber — Stellen\'s Vault'
+          })
+        });
+
+        if (res.ok) {
+          document.getElementById('dsForm').style.display = 'none';
+          document.getElementById('dsSuccess').style.display = 'flex';
+        } else {
+          throw new Error('Failed');
+        }
+      } catch (err) {
+        errorEl.innerHTML = '<span>❌ Something went wrong. Try again.</span>';
+        errorEl.style.display = 'flex';
+        btn.textContent = 'Subscribe →';
+        btn.disabled = false;
+      }
     }
+
+    // Allow pressing Enter to subscribe
+    document.getElementById('digestEmail').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') subscribeDigest();
+    });
   </script>
 </body>
 </html>
