@@ -52,6 +52,9 @@
         <button class="sidebar-btn" onclick="showTab('manage', this)">
           <span>⚙️</span> Manage Vault
         </button>
+        <button class="sidebar-btn" onclick="showTab('digest', this)">
+          <span>📬</span> Weekly Digest
+        </button>
         <button class="sidebar-btn" onclick="showTab('stats', this)">
           <span>📊</span> Stats
         </button>
@@ -230,6 +233,65 @@
           </div>
         </div>
 
+        <!-- ====== TAB: DIGEST ====== -->
+        <div id="tab-digest" class="admin-tab">
+          <div class="tab-header">
+            <h2>Weekly <span>Digest</span></h2>
+            <p>Create and publish a new digest issue — it unlocks automatically on the digest page.</p>
+          </div>
+
+          <!-- EXISTING ISSUES -->
+          <div class="manage-section" style="margin-bottom:40px;">
+            <div class="manage-header">
+              <h3>Published Issues <span id="digestCount" class="count-badge">0</span></h3>
+              <button class="btn-ghost" style="font-size:12px;padding:8px 14px;cursor:pointer;" onclick="loadDigests()">↻ Refresh</button>
+            </div>
+            <div id="digestIssueList" class="manage-list">
+              <div class="manage-loading">Loading...</div>
+            </div>
+          </div>
+
+          <!-- CREATE NEW ISSUE -->
+          <div class="tab-header">
+            <h3 style="font-family:var(--font-display);font-size:22px;font-weight:800;margin-bottom:6px;">Create New <span style="color:var(--cyan)">Issue</span></h3>
+            <p>Pick the top resources and publish — the digest page updates instantly.</p>
+          </div>
+          <div class="admin-form-card">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Issue Number *</label>
+                <input type="number" id="dig-number" placeholder="e.g. 1" min="1">
+              </div>
+              <div class="form-group">
+                <label>Issue Title (optional)</label>
+                <input type="text" id="dig-title" placeholder="e.g. The Best Free Courses This Week">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Select Top Resources * (pick up to 10)</label>
+              <div id="dig-resource-picker" class="resource-picker">
+                <div class="manage-loading">Loading resources...</div>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Publish immediately?</label>
+                <select id="dig-published">
+                  <option value="true">✅ Yes — go live now</option>
+                  <option value="false">🔒 No — save as draft</option>
+                </select>
+              </div>
+            </div>
+
+            <button class="btn-primary add-btn" onclick="submitDigest()">
+              Publish Issue →
+            </button>
+            <div id="digMsg" class="form-msg" style="display:none;"></div>
+          </div>
+        </div>
+
         <!-- ====== TAB: STATS ====== -->
         <div id="tab-stats" class="admin-tab">
           <div class="tab-header">
@@ -305,6 +367,7 @@
       if (name === 'manage') loadManage();
       if (name === 'stats') loadStats();
       if (name === 'add-resource') loadInfluencerDropdown();
+      if (name === 'digest') loadDigests();
     }
 
     // ====== INIT ======
@@ -448,6 +511,97 @@
       btn.textContent = '...';
       const ok = await deleteResource(id);
       if (ok) loadManage();
+    }
+
+    // ====== DIGEST FUNCTIONS ======
+    async function loadDigests() {
+      const list = document.getElementById('digestIssueList');
+      const countEl = document.getElementById('digestCount');
+      if (!list) return;
+
+      const digests = await fetchDigests();
+      countEl.textContent = digests.length;
+
+      if (digests.length === 0) {
+        list.innerHTML = '<div class="manage-empty">No issues published yet.</div>';
+        return;
+      }
+
+      list.innerHTML = digests.map(d => `
+        <div class="manage-item">
+          <div class="mi-info">
+            <div class="mi-handle">Issue #${String(d.issue_number).padStart(3,'0')} — ${d.title || 'Untitled'}</div>
+            <div class="mi-meta">${d.published ? '✅ Published' : '🔒 Draft'} · ${new Date(d.created_at).toLocaleDateString()}</div>
+          </div>
+          <div style="display:flex;gap:8px;">
+            <button class="visit-btn" onclick="togglePublish('${d.id}', ${d.published}, this)">
+              ${d.published ? 'Unpublish' : 'Publish'}
+            </button>
+            <button class="delete-btn" onclick="removeDigest('${d.id}', this)">🗑</button>
+          </div>
+        </div>
+      `).join('');
+
+      // Load resource picker
+      await loadResourcePicker();
+    }
+
+    async function loadResourcePicker() {
+      const picker = document.getElementById('dig-resource-picker');
+      if (!picker) return;
+      const res = await fetchResources();
+      if (res.length === 0) {
+        picker.innerHTML = '<div class="manage-empty">No resources yet — add some first.</div>';
+        return;
+      }
+      picker.innerHTML = res.map(r => `
+        <label class="picker-item">
+          <input type="checkbox" value="${r.id}" class="picker-check">
+          <div class="picker-info">
+            <span class="picker-title">${r.title}</span>
+            <span class="picker-meta">${r.category}${r.tag ? ' · ' + r.tag : ''} · ${r.votes || 0} votes</span>
+          </div>
+        </label>
+      `).join('');
+    }
+
+    async function submitDigest() {
+      const issue_number = parseInt(document.getElementById('dig-number').value);
+      const title = document.getElementById('dig-title').value.trim();
+      const published = document.getElementById('dig-published').value === 'true';
+      const msg = document.getElementById('digMsg');
+
+      const checked = [...document.querySelectorAll('.picker-check:checked')];
+      if (!issue_number) { showMsg(msg, '❌ Issue number is required.', 'error'); return; }
+      if (checked.length === 0) { showMsg(msg, '❌ Pick at least one resource.', 'error'); return; }
+      if (checked.length > 10) { showMsg(msg, '❌ Max 10 resources per issue.', 'error'); return; }
+
+      const digest = await createDigest({ issue_number, title, published });
+      if (!digest) { showMsg(msg, '❌ Something went wrong.', 'error'); return; }
+
+      // Add each resource to the digest
+      for (let i = 0; i < checked.length; i++) {
+        await addDigestResource({ digest_id: digest.id, resource_id: checked[i].value, position: i + 1 });
+      }
+
+      showMsg(msg, `✅ Issue #${String(issue_number).padStart(3,'0')} ${published ? 'published' : 'saved as draft'}!`, 'success');
+      document.getElementById('dig-number').value = '';
+      document.getElementById('dig-title').value = '';
+      document.querySelectorAll('.picker-check').forEach(c => c.checked = false);
+      await loadDigests();
+    }
+
+    async function togglePublish(id, currentState, btn) {
+      btn.textContent = '...';
+      await db.from('digests').update({ published: !currentState }).eq('id', id);
+      await loadDigests();
+    }
+
+    async function removeDigest(id, btn) {
+      if (!confirm('Delete this digest issue?')) return;
+      btn.textContent = '...';
+      await db.from('digests').delete().eq('id', id);
+      await loadDigests();
     }
 
     // ====== HELPER ======
