@@ -518,6 +518,8 @@
       const list = document.getElementById('digestIssueList');
       const countEl = document.getElementById('digestCount');
       if (!list) return;
+      // Always reload picker when digest tab opens
+      await loadResourcePicker();
 
       const digests = await fetchDigests();
       countEl.textContent = digests.length;
@@ -549,11 +551,18 @@
     async function loadResourcePicker() {
       const picker = document.getElementById('dig-resource-picker');
       if (!picker) return;
-      const res = await fetchResources();
-      if (res.length === 0) {
+
+      // Fetch directly to avoid join issues
+      const { data: res, error } = await db
+        .from('resources')
+        .select('id, title, category, tag, votes')
+        .order('votes', { ascending: false });
+
+      if (error || !res || res.length === 0) {
         picker.innerHTML = '<div class="manage-empty">No resources yet — add some first.</div>';
         return;
       }
+
       picker.innerHTML = res.map(r => `
         <label class="picker-item">
           <input type="checkbox" value="${r.id}" class="picker-check">
