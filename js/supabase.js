@@ -1,5 +1,5 @@
 /* ================================
-SUPABASE CONFIG
+   STELLEN'S VAULT — SUPABASE CONFIG
 ================================ */
 
 const SUPABASE_URL = 'https://lwfmncyizaynosyamztr.supabase.co';
@@ -80,4 +80,46 @@ async function deleteResource(id) {
     .eq('id', id);
   if (error) { console.error('deleteResource:', error); return false; }
   return true;
+}
+
+// ====== FETCH ALL DIGESTS ======
+async function fetchDigests() {
+  const { data, error } = await db
+    .from('digests')
+    .select('*')
+    .order('issue_number', { ascending: false });
+  if (error) { console.error('fetchDigests:', error); return []; }
+  return data;
+}
+
+// ====== FETCH LATEST PUBLISHED DIGEST WITH RESOURCES ======
+async function fetchLatestDigest() {
+  const { data, error } = await db
+    .from('digests')
+    .select('*, digest_resources(position, resources(id, title, url, category, tag, votes, influencers(handle)))')
+    .eq('published', true)
+    .order('issue_number', { ascending: false })
+    .limit(1)
+    .single();
+  if (error) { return null; }
+  return data;
+}
+
+// ====== CREATE DIGEST ======
+async function createDigest(digest) {
+  const { data, error } = await db
+    .from('digests')
+    .insert([digest])
+    .select()
+    .single();
+  if (error) { console.error('createDigest:', error); return null; }
+  return data;
+}
+
+// ====== ADD RESOURCE TO DIGEST ======
+async function addDigestResource(entry) {
+  const { error } = await db
+    .from('digest_resources')
+    .insert([entry]);
+  if (error) console.error('addDigestResource:', error);
 }
