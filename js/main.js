@@ -1,5 +1,7 @@
-
-
+/* ================================
+   STELLEN'S VAULT — MAIN JS
+   Powered by Supabase
+================================ */
 
 // ====== CUSTOM CURSOR ======
 const cursor = document.getElementById('cursor');
@@ -81,10 +83,16 @@ function renderInfluencers(data) {
     return;
   }
   if (empty) empty.style.display = 'none';
-  grid.innerHTML = data.map(inf => `
+  grid.innerHTML = data.map(inf => {
+    const igUser = inf.handle.replace('@','');
+    const avatarUrl = `https://unavatar.io/instagram/${igUser}`;
+    return `
     <a href="influencer-profile.html?id=${inf.id}" class="inf-card reveal" data-niche="${inf.niche_key}">
       <div class="ic-top">
-        <div class="ic-avatar">${inf.name.charAt(0).toUpperCase()}</div>
+        <img src="${avatarUrl}" class="ic-avatar-img"
+          onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"
+          alt="${inf.handle}">
+        <div class="ic-avatar" style="display:none">${inf.name.charAt(0).toUpperCase()}</div>
         <div>
           <div class="ic-handle">${inf.handle}</div>
           <div class="ic-name">${inf.name}</div>
@@ -96,7 +104,7 @@ function renderInfluencers(data) {
         <div><strong>${inf.link_count || 0}</strong>Links</div>
       </div>
     </a>
-  `).join('');
+  `}).join('');
   grid.querySelectorAll('.reveal').forEach(el => revealObserver.observe(el));
 }
 
@@ -121,6 +129,7 @@ function renderResources(resources, containerId = 'resList') {
         <div class="res-title">${r.title}</div>
         <div class="res-meta">
           <span class="res-cat">${r.category}</span>
+          ${r.tag ? `<span class="res-tag tag-${r.tag.toLowerCase()}">${r.tag}</span>` : ''}
           ${r.influencers ? `<span>via ${r.influencers.handle}</span>` : ''}
         </div>
       </div>
