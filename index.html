@@ -4,15 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Stellen's Vault — Dev Resources Hub</title>
+  <meta name="description" content="Every Instagram dev influencer. Every link they've shared. All in one searchable, voteable place. Curated by Stellen.">
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-  <!-- CURSOR -->
   <div id="cursor"></div>
 
-  <!-- NAV -->
   <nav id="navbar">
     <a href="index.html" class="nav-logo">Stellen's<span>Vault</span></a>
     <ul class="nav-links">
@@ -22,12 +21,9 @@
       <li><a href="digest.html" class="nav-link">Weekly Digest</a></li>
       <li><a href="submit.html" class="nav-link btn-submit">+ Submit</a></li>
     </ul>
-    <button class="nav-burger" id="burger">
-      <span></span><span></span><span></span>
-    </button>
+    <button class="nav-burger" id="burger"><span></span><span></span><span></span></button>
   </nav>
 
-  <!-- MOBILE MENU -->
   <div class="mobile-menu" id="mobileMenu">
     <a href="influencers.html">Influencers</a>
     <a href="resources.html">Resources</a>
@@ -56,16 +52,23 @@
         Every Instagram dev influencer. Every link they've ever shared.<br>
         All in one place. No more hunting.
       </p>
-      <div class="hero-btns reveal">
-        <a href="influencers.html" class="btn-primary">Browse Influencers →</a>
-        <a href="resources.html" class="btn-ghost">Explore Resources</a>
+
+      <!-- 🔍 GLOBAL SEARCH BAR -->
+      <div class="global-search reveal">
+        <div class="gs-wrap">
+          <svg viewBox="0 0 24 24" class="gs-icon"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+          <input type="text" id="globalSearch" placeholder="Search influencers, resources, tools..." autocomplete="off">
+          <button class="gs-btn" onclick="runGlobalSearch()">Search</button>
+        </div>
+        <div class="gs-results" id="gsResults" style="display:none;"></div>
       </div>
+
       <div class="hero-stats reveal">
-        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Influencers</span></div>
+        <div class="stat"><span class="stat-num">0</span><span class="stat-label">Influencers</span></div>
         <div class="stat-div"></div>
-        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Resources</span></div>
+        <div class="stat"><span class="stat-num">0</span><span class="stat-label">Resources</span></div>
         <div class="stat-div"></div>
-        <div class="stat"><span class="stat-num" data-target="0">0</span><span class="stat-label">Categories</span></div>
+        <div class="stat"><span class="stat-num">0</span><span class="stat-label">Categories</span></div>
       </div>
     </div>
     <div class="hero-visual reveal">
@@ -88,6 +91,23 @@
           <span>🔒 All resources verified</span>
           <span class="vc-live">LIVE</span>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ⭐ FEATURED / TOP PICKS -->
+  <section class="featured-section">
+    <div class="s-wrap">
+      <div class="s-label reveal">Hand Picked</div>
+      <h2 class="s-title reveal">Top <span>Picks</span> This Week</h2>
+      <div class="featured-grid" id="featuredGrid">
+        <!-- Populated by JS -->
+        <div class="featured-empty" id="featuredEmpty">
+          <span>🌱 Top picks will appear here once resources are added to the vault.</span>
+        </div>
+      </div>
+      <div style="text-align:center;margin-top:32px;" class="reveal">
+        <a href="resources.html" class="btn-ghost">View All Resources →</a>
       </div>
     </div>
   </section>
@@ -132,45 +152,45 @@
       <div class="s-label reveal">Browse By</div>
       <h2 class="s-title reveal">Resource <span>Categories</span></h2>
       <div class="cats-grid">
-        <a href="categories.html?cat=courses" class="cat-card reveal">
+        <a href="resources.html?cat=courses" class="cat-card reveal">
           <div class="cat-icon">🎓</div>
           <div class="cat-name">Free Courses</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="courses">0 links</div>
         </a>
-        <a href="categories.html?cat=tools" class="cat-card reveal rv2">
+        <a href="resources.html?cat=tools" class="cat-card reveal rv2">
           <div class="cat-icon">🛠️</div>
           <div class="cat-name">Dev Tools</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="tools">0 links</div>
         </a>
-        <a href="categories.html?cat=ui" class="cat-card reveal rv3">
+        <a href="resources.html?cat=ui" class="cat-card reveal rv3">
           <div class="cat-icon">🎨</div>
           <div class="cat-name">UI Libraries</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="ui">0 links</div>
         </a>
-        <a href="categories.html?cat=cheatsheets" class="cat-card reveal">
+        <a href="resources.html?cat=cheatsheets" class="cat-card reveal">
           <div class="cat-icon">📄</div>
           <div class="cat-name">Cheat Sheets</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="cheatsheets">0 links</div>
         </a>
-        <a href="categories.html?cat=jobs" class="cat-card reveal rv2">
+        <a href="resources.html?cat=jobs" class="cat-card reveal rv2">
           <div class="cat-icon">💼</div>
           <div class="cat-name">Job Boards</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="jobs">0 links</div>
         </a>
-        <a href="categories.html?cat=roadmaps" class="cat-card reveal rv3">
+        <a href="resources.html?cat=roadmaps" class="cat-card reveal rv3">
           <div class="cat-icon">🗺️</div>
           <div class="cat-name">Roadmaps</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="roadmaps">0 links</div>
         </a>
-        <a href="categories.html?cat=youtube" class="cat-card reveal">
+        <a href="resources.html?cat=youtube" class="cat-card reveal">
           <div class="cat-icon">▶️</div>
           <div class="cat-name">YouTube</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="youtube">0 links</div>
         </a>
-        <a href="categories.html?cat=articles" class="cat-card reveal rv2">
+        <a href="resources.html?cat=articles" class="cat-card reveal rv2">
           <div class="cat-icon">📰</div>
           <div class="cat-name">Articles</div>
-          <div class="cat-count">0 links</div>
+          <div class="cat-count" data-cat="articles">0 links</div>
         </a>
       </div>
     </div>
@@ -188,7 +208,6 @@
     </div>
   </section>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-inner">
       <div class="footer-brand">
@@ -221,5 +240,6 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
+  <script src="js/home.js"></script>
 </body>
 </html>
