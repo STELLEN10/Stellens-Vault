@@ -59,49 +59,15 @@
         </div>
       </div>
 
-      <!-- COMING SOON STATE -->
-      <div class="digest-coming reveal">
-        <div class="dc-badge">
-          <span class="badge-pulse"></span>
-          First digest drops when the vault goes live
-        </div>
-        <h2>Issue <span>#001</span> is being built</h2>
-        <p>Once the first influencers are live in the vault, the weekly digest will launch.<br>Subscribe above so you don't miss it.</p>
-
-        <div class="digest-preview">
-          <div class="dp-header">
-            <span class="dp-issue">Issue #001 · Preview</span>
-            <span class="dp-date">Coming Soon</span>
-          </div>
-          <div class="dp-items">
-            <div class="dp-item locked">
-              <div class="dp-num">01</div>
-              <div class="dp-content">
-                <div class="dp-title">🔒 Top resource of the week</div>
-                <div class="dp-meta">Submitted by a vault influencer</div>
-              </div>
-              <div class="dp-votes">— votes</div>
-            </div>
-            <div class="dp-item locked">
-              <div class="dp-num">02</div>
-              <div class="dp-content">
-                <div class="dp-title">🔒 Resource #2</div>
-                <div class="dp-meta">Submitted by a vault influencer</div>
-              </div>
-              <div class="dp-votes">— votes</div>
-            </div>
-            <div class="dp-item locked">
-              <div class="dp-num">03</div>
-              <div class="dp-content">
-                <div class="dp-title">🔒 Resource #3</div>
-                <div class="dp-meta">Submitted by a vault influencer</div>
-              </div>
-              <div class="dp-votes">— votes</div>
-            </div>
-          </div>
-          <div class="dp-footer">+ 7 more resources in the full digest</div>
+      <!-- DIGEST CONTENT — auto switches between locked & live -->
+      <div id="digestContent" class="digest-coming reveal">
+        <!-- Filled by JS below -->
+        <div class="digest-loading">
+          <div class="badge-pulse" style="width:10px;height:10px;background:var(--cyan);border-radius:50%;display:inline-block;margin-right:8px;"></div>
+          Loading digest...
         </div>
       </div>
+
     </div>
   </section>
 
@@ -131,56 +97,125 @@
   <script src="js/supabase.js"></script>
   <script src="js/main.js"></script>
   <script>
+
+    // ====== LOAD DIGEST ======
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('digestContent');
+      const digest = await fetchLatestDigest();
+
+      if (!digest) {
+        // LOCKED STATE — no published issue yet
+        container.innerHTML = `
+          <div class="dc-badge">
+            <span class="badge-pulse"></span>
+            First digest drops when the vault goes live
+          </div>
+          <h2>Issue <span>#001</span> is being built</h2>
+          <p>Once the first influencers are live in the vault, the weekly digest will launch.<br>Subscribe above so you don't miss it.</p>
+          <div class="digest-preview">
+            <div class="dp-header">
+              <span class="dp-issue">Issue #001 · Preview</span>
+              <span class="dp-date">Coming Soon</span>
+            </div>
+            <div class="dp-items">
+              ${[1,2,3].map(n => `
+                <div class="dp-item locked">
+                  <div class="dp-num">0${n}</div>
+                  <div class="dp-content">
+                    <div class="dp-title">🔒 Resource #${n}</div>
+                    <div class="dp-meta">Submitted by a vault influencer</div>
+                  </div>
+                  <div class="dp-votes">— votes</div>
+                </div>
+              `).join('')}
+            </div>
+            <div class="dp-footer">+ more resources in the full digest</div>
+          </div>
+        `;
+        return;
+      }
+
+      // LIVE STATE — published issue exists
+      const issueNum = String(digest.issue_number).padStart(3, '0');
+      const resources = digest.digest_resources
+        .sort((a, b) => a.position - b.position);
+
+      container.innerHTML = `
+        <div class="dc-badge" style="background:rgba(0,245,255,0.08);border-color:rgba(0,245,255,0.2);color:var(--cyan);">
+          <span class="badge-pulse"></span>
+          Issue #${issueNum} is live now
+        </div>
+        <h2>Issue <span>#${issueNum}</span>${digest.title ? ' — ' + digest.title : ''}</h2>
+        <p>The top ${resources.length} developer resources this week, curated by Stellen.</p>
+
+        <div class="digest-preview live">
+          <div class="dp-header">
+            <span class="dp-issue">Issue #${issueNum} · Weekly Digest</span>
+            <span class="dp-date">${new Date(digest.created_at).toLocaleDateString('en-GB', { day:'numeric', month:'long', year:'numeric' })}</span>
+          </div>
+          <div class="dp-items">
+            ${resources.map((dr, idx) => {
+              const r = dr.resources;
+              if (!r) return '';
+              return `
+                <a href="${r.url}" target="_blank" rel="noopener" class="dp-item dp-item-live">
+                  <div class="dp-num">${String(idx + 1).padStart(2,'0')}</div>
+                  <div class="dp-content">
+                    <div class="dp-title">${r.title}</div>
+                    <div class="dp-meta">
+                      ${r.category}
+                      ${r.tag ? `· <span class="res-tag tag-${r.tag.toLowerCase()}">${r.tag}</span>` : ''}
+                      ${r.influencers ? `· via ${r.influencers.handle}` : ''}
+                    </div>
+                  </div>
+                  <div class="dp-votes">▲ ${r.votes || 0}</div>
+                </a>
+              `;
+            }).join('')}
+          </div>
+          <div class="dp-footer">
+            <a href="resources.html" style="color:var(--cyan);text-decoration:none;font-family:var(--font-mono);font-size:11px;">
+              Browse all resources in the vault →
+            </a>
+          </div>
+        </div>
+      `;
+    });
+
+    // ====== SUBSCRIBE ======
     async function subscribeDigest() {
       const email = document.getElementById('digestEmail').value.trim();
       const btn = document.getElementById('subBtn');
       const errorEl = document.getElementById('dsError');
-
       if (!email) return;
-
-      // Basic email validation
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if (!emailRegex.test(email)) {
         errorEl.innerHTML = '<span>❌ Please enter a valid email address.</span>';
-        errorEl.style.display = 'flex';
-        return;
+        errorEl.style.display = 'flex'; return;
       }
-
-      btn.textContent = 'Subscribing...';
-      btn.disabled = true;
+      btn.textContent = 'Subscribing...'; btn.disabled = true;
       errorEl.style.display = 'none';
-
       try {
         const res = await fetch('https://formspree.io/f/mpqolewe', {
           method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email: email,
-            _subject: 'New Digest Subscriber — Stellen\'s Vault'
-          })
+          headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, _subject: "New Digest Subscriber — Stellen's Vault" })
         });
-
         if (res.ok) {
           document.getElementById('dsForm').style.display = 'none';
           document.getElementById('dsSuccess').style.display = 'flex';
-        } else {
-          throw new Error('Failed');
-        }
-      } catch (err) {
+        } else { throw new Error('Failed'); }
+      } catch {
         errorEl.innerHTML = '<span>❌ Something went wrong. Try again.</span>';
         errorEl.style.display = 'flex';
-        btn.textContent = 'Subscribe →';
-        btn.disabled = false;
+        btn.textContent = 'Subscribe →'; btn.disabled = false;
       }
     }
 
-    // Allow pressing Enter to subscribe
-    document.getElementById('digestEmail').addEventListener('keydown', (e) => {
+    document.getElementById('digestEmail').addEventListener('keydown', e => {
       if (e.key === 'Enter') subscribeDigest();
     });
+
   </script>
 </body>
 </html>
