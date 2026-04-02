@@ -171,6 +171,26 @@
               </div>
             </div>
 
+            <div class="form-row">
+              <div class="form-group">
+                <label>Resource Tag</label>
+                <select id="res-tag">
+                  <option value="">No tag</option>
+                  <option value="Free">🟢 Free</option>
+                  <option value="Paid">🔴 Paid</option>
+                  <option value="Beginner">🔵 Beginner</option>
+                  <option value="Advanced">🟠 Advanced</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Featured? ⭐</label>
+                <select id="res-featured">
+                  <option value="false">No</option>
+                  <option value="true">Yes — add to Top Picks</option>
+                </select>
+              </div>
+            </div>
+
             <div class="form-group">
               <label>Resource URL *</label>
               <input type="url" id="res-url" placeholder="https://...">
@@ -345,6 +365,8 @@
       const title = document.getElementById('res-title').value.trim();
       const url = document.getElementById('res-url').value.trim();
       const category = document.getElementById('res-category').value;
+      const tag = document.getElementById('res-tag').value;
+      const featured = document.getElementById('res-featured').value === 'true';
       const msg = document.getElementById('resMsg');
 
       if (!influencer_id || !title || !url) {
@@ -352,7 +374,7 @@
         return;
       }
 
-      const result = await addResource({ influencer_id, title, url, category, votes: 0 });
+      const result = await addResource({ influencer_id, title, url, category, tag, featured, votes: 0 });
 
       if (result) {
         showMsg(msg, `✅ Resource added successfully!`, 'success');
